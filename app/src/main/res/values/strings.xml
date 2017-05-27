@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Serial Port API sample</string>
+    <string name="about_msg">
+Serial Port API sample v1.1\n
+\n
+This program is the sample application provided with project android-serialport-api.\n
+\n
+More information and bug report on [http://code.google.com/p/android-serialport-api]\n
+\n
+Copyright 2010-2011 Cedric Priscal\n
+\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at\n
+\n
+http://www.apache.org/licenses/LICENSE-2.0\n
+\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.\n
+	</string>
+    <string name="error_configuration">Please configure your serial port first.</string>
+    <string name="error_security">You do not have read/write permission to the serial
+		port.</string>
+    <string name="error_unknown">The serial port can not be opened for an unknown
+		reason.</string>
+
+
+    <string name="i0">0</string>
+    <string name="sent_bytes">发送数据</string>
+    <string name="received_back">接收数据</string>
+    <string name="lost_bytes">Lost bytes</string>
+    <string name="corrupted_bytes">Corrupted bytes</string>
+
+    <!-- for main.xml-->
+    <string name="Setup">Setup</string>
+    <string name="myserial">MySerial</string>
+    <string name="Console">Console</string>
+    <string name="Loopback">Loopback</string>
+    <string name="Send_01">Send 0101</string>
+    <string name="About">About</string>
+    <string name="Quit">Quit</string>
+
+    <!-- for myserial.xml-->
+	<string name="serial">Serial</string>
+	<string name="sendassic">send as assic</string>
+	<string name="sendhex">send as hex</string>
+	<string name="recive">receive area</string>
+
+	<string name="send_hint">Please Input Text for Send</string>
+	<string name="receive_hint">Receive Text Area</string>
+
+    <!-- for sending01.xml-->
+    <string name="Sending_01">Sending 0101...</string>
+    <string name="clean">CLEAN</string>
+    <string name="setting">Setting</string>
+
+
+</resources>
