@@ -23,11 +23,11 @@
         android:text="@string/myserial" />
 
     <Button
-        android:id="@+id/ButtonConsole"
+        android:id="@+id/PillowTest"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/Console" />
+        android:text="@string/pillow" />
 
     <Button
         android:id="@+id/ButtonLoopback"

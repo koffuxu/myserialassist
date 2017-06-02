@@ -39,7 +39,7 @@ limitations under the License.\n
     <!-- for main.xml-->
     <string name="Setup">Setup</string>
     <string name="myserial">MySerial</string>
-    <string name="Console">Console</string>
+    <string name="pillow">Pillow Test</string>
     <string name="Loopback">Loopback</string>
     <string name="Send_01">Send 0101</string>
     <string name="About">About</string>

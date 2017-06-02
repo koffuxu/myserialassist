@@ -45,10 +45,10 @@ public class MainMenu extends Activity {
 			}
 		});
 
-        final Button buttonConsole = (Button)findViewById(R.id.ButtonConsole);
+        final Button buttonConsole = (Button)findViewById(R.id.PillowTest);
         buttonConsole.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivity(new Intent(MainMenu.this, ConsoleActivity.class));
+				startActivity(new Intent(MainMenu.this, PillowTestActivity.class));
 			}
 		});
 

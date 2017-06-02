@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="30dp"
+    android:orientation="vertical"
+    android:background="@color/div_white"
+    android:weightSum="1">
+
+    <!--receive area -->
+    <LinearLayout
+        android:id="@+id/llUp"
+        android:background="@drawable/linearlayout_shape"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.3"
+        android:weightSum="1">
+
+        <EditText
+            android:gravity="top"
+            android:id="@+id/EditTextEmission"
+            style="@android:style/Widget.Material.Light.EditText"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:background="@color/bg_white"
+            android:hint="@string/receive_hint"
+            android:textColor="?android:attr/colorBackground"
+            android:layout_weight="0.6"
+            tools:ignore="NestedWeights">
+        </EditText>
+
+        <LinearLayout
+            android:background="#FFFFFF"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="vertical"
+            tools:ignore="ExtraText">
+            >
+
+            <Button
+                android:id="@+id/BtCleanRev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/clean" />
+
+            <Button
+                android:id="@+id/BtSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/setting" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:background="@drawable/linearlayout_shape"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.7"
+        android:weightSum="1"
+        >
+        <!-- LED Test -->
+        <LinearLayout
+            android:background="#98d79d"
+            android:orientation="vertical"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LED测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:id="@+id/BtSendAssic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置LED红"
+                />
+            <Button
+                android:id="@+id/BtSendHex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置LED绿"
+                />
+            <Button
+                android:id="@+id/BtCleanSed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置LED蓝" />
+            <Button
+                android:id="@+id/BtCleanSed1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="读取LED颜色" />
+
+            <!--Mic Test -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MIC测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="读取MIC值"/>
+        </LinearLayout>
+
+         <LinearLayout
+            android:background="#98d79d"
+            android:orientation="vertical"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+            <!--Gas Test -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="气压测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开气压电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="关闭气压电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="读取气压值"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="复位气压"/>
+
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="气阀测试"
+                 android:textColor="@color/colorAccent" />
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="打开气阀电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="关闭气阀电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="获取气阀压力值"/>
+        </LinearLayout>
+
+
+         <LinearLayout
+            android:background="#98d79d"
+            android:orientation="vertical"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+            <!--Gas Test -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="气泵测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开气泵电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="关闭气泵电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="获取气泵电源状态"/>
+             <!-- USB test -->
+             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USB测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开USB电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="关闭uSB电源"/>
+             <Button
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="获取USB电源状态"/>
+        </LinearLayout>
+
+         <LinearLayout
+            android:background="#98d79d"
+            android:orientation="vertical"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+            <!--Gas Test -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="用户按键测试"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="读取用户按键值"/>
+        </LinearLayout>
+
+         <LinearLayout
+            android:background="#98d79d"
+            android:orientation="vertical"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+            <!--Gas Test -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TBD..."/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
