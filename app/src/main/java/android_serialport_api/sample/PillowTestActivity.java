@@ -18,22 +18,74 @@ package android_serialport_api.sample;
 
 import java.io.IOException;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
-public class PillowTestActivity extends SerialPortActivity {
+public class PillowTestActivity extends SerialPortActivity implements View.OnClickListener {
 
 	private static final String TAG = "PillowTest";
 	EditText mReception;
+    private String CmdHead = "ZT+AT";
+    private String CmdTail = "\r\n";
 
+	private int sendZTATComand(String rawcmd){
+        int res = -1;
+        String command = CmdHead + rawcmd + CmdHead;
+        Log.d(TAG,"the command is:" + command);
+        try {
+            mOutputStream.write(command.getBytes());
+            res = 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+            res = -1;
+        }
+        Toast.makeText(getApplicationContext(), "send : "+ command,
+                Toast.LENGTH_SHORT).show();
+        return res;
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pillow);
+		// for LED Test
+		Button btSetLedR = (Button) findViewById(R.id.BtSetLedR);
+		Button btSetLedG = (Button) findViewById(R.id.BtSetLedG);
+		Button btSetLedB = (Button) findViewById(R.id.BtSetLedB);
+		Button btGetLed = (Button) findViewById(R.id.BtGetLed);
+		btSetLedR.setOnClickListener(this);
+		btSetLedG.setOnClickListener(this);
+		btSetLedB.setOnClickListener(this);
+		btGetLed.setOnClickListener(this);
+
+	}
+	@Override
+	public void onClick(View v) {
+        switch (v.getId()) {
+			case R.id.BtSetLedR:
+				Log.d(TAG, "set led R");
+                sendZTATComand("LED=SETRGB:r");
+				break;
+			case R.id.BtSetLedG:
+                Log.d(TAG, "set led G");
+                sendZTATComand("LED=SETRGB:g");
+				break;
+            case R.id.BtSetLedB:
+                Log.d(TAG, "set led B");
+                sendZTATComand("LED=SETRGB:b");
+                break;
+            case R.id.BtGetLed:
+                Log.d(TAG, "get led");
+                sendZTATComand("LED=GETRGB");
+                break;
+		}
 
 	}
 
@@ -48,4 +100,5 @@ public class PillowTestActivity extends SerialPortActivity {
 			}
 		});
 	}
+
 }
