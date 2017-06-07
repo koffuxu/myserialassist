@@ -9,14 +9,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import android_serialport_api.sample.Application;
+
 /**
  * Created by Administrator on 2017/5/27.
  */
 
 public class Utils {
-    private static final String TAG = "SerialUtils";
+    private static final String TAG = "SerialUtils-utils";
     public static int grantPermission(File device){
         int result = 0;
+        Log.d(TAG,"try to grant permission for:"+device.getAbsolutePath());
         ProcessBuilder pb = new ProcessBuilder("/system/bin/sh");
         //java.lang.ProcessBuilder:  Creates operating system processes.
         pb.directory(new File("/"));//设置shell的当前目录。

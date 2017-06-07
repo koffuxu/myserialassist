@@ -16,6 +16,8 @@
 
 package android_serialport_api;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,13 +25,9 @@ import java.io.LineNumberReader;
 import java.util.Iterator;
 import java.util.Vector;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import android_serialport_api.sample.Application;
-
 public class SerialPortFinder {
 
+    private static final String TAG = "Serial-PortFinder";
 	public class Driver {
 		public Driver(String name, String root) {
 			mDriverName = name;
@@ -45,7 +43,6 @@ public class SerialPortFinder {
                 //TODO
                 /* Check access permission */
                 if(!dev.canRead() || !dev.canWrite()) {
-                    Log.d(TAG,"try to get the access permission");
                     int isRoot = Utils.grantPermission(dev);
                     if(isRoot == 0) {
                         Log.d(TAG,"grant permission failed!");
@@ -77,7 +74,6 @@ public class SerialPortFinder {
 		}
 	}
 
-	private static final String TAG = "SerialPort";
 
 	private Vector<Driver> mDrivers = null;
 
