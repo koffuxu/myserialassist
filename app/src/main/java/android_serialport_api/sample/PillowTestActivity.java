@@ -33,12 +33,12 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 
 	private static final String TAG = "PillowTest";
 	EditText mReception;
-    private String CmdHead = "ZT+AT";
+    private String CmdHead = "ztat AT+";
     private String CmdTail = "\r\n";
 
 	private int sendZTATComand(String rawcmd){
         int res = -1;
-        String command = CmdHead + rawcmd + CmdHead;
+        String command = CmdHead + rawcmd + CmdTail;
         Log.d(TAG,"the command is:" + command);
         try {
             mOutputStream.write(command.getBytes());
@@ -55,6 +55,8 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pillow);
+		//for receiver
+		mReception= (EditText) findViewById(R.id.EditTextReceiver);
 		// for LED Test
 		Button btSetLedR = (Button) findViewById(R.id.BtSetLedR);
 		Button btSetLedG = (Button) findViewById(R.id.BtSetLedG);
@@ -71,15 +73,15 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
         switch (v.getId()) {
 			case R.id.BtSetLedR:
 				Log.d(TAG, "set led R");
-                sendZTATComand("LED=SETRGB:r");
+                sendZTATComand("ZTLED=SETRGB:255,0,0");
 				break;
 			case R.id.BtSetLedG:
                 Log.d(TAG, "set led G");
-                sendZTATComand("LED=SETRGB:g");
+                sendZTATComand("ZTLED=SETRGB:0,255,0");
 				break;
             case R.id.BtSetLedB:
                 Log.d(TAG, "set led B");
-                sendZTATComand("LED=SETRGB:b");
+                sendZTATComand("ZTLED=SETRGB:0,0,255");
                 break;
             case R.id.BtGetLed:
                 Log.d(TAG, "get led");

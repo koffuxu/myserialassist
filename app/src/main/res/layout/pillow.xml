@@ -20,7 +20,7 @@
 
         <EditText
             android:gravity="top"
-            android:id="@+id/EditTextEmission"
+            android:id="@+id/EditTextReceiver"
             style="@android:style/Widget.Material.Light.EditText"
             android:layout_width="0sp"
             android:layout_height="match_parent"
