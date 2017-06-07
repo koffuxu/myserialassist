@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -15,8 +16,9 @@ import android_serialport_api.HexDump;
 public class MySerialActivity extends SerialPortActivity {
     /** Called when the activity is first created. */
     private static final String TAG = "SerialPort";	
-    EditText mSend;
-    EditText mReception;
+    private EditText mSend;
+    private EditText mReception;
+    private RadioGroup mRadioGrop;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +26,7 @@ public class MySerialActivity extends SerialPortActivity {
 
         mSend = (EditText) findViewById(R.id.EditSend);
         mReception= (EditText) findViewById(R.id.EditTextEmission);
+        mRadioGrop = (RadioGroup) findViewById(R.id.mRadioGroup);
 
         final Button btSendAssic= (Button)findViewById(R.id.BtSendAssic);
         final Button btSendHex= (Button)findViewById(R.id.BtSendHex);
@@ -98,6 +101,20 @@ public class MySerialActivity extends SerialPortActivity {
             @Override
             public void onClick(View v) {
                 mSend.setText("");
+            }
+        });
+
+        //for Recive format assic/hex
+        mRadioGrop.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rBAssic){
+                    Log.d(TAG, "Receive show as Assic");
+                } else if (checkedId == R.id.rBHex) {
+                    Log.d(TAG, "Receive show as Hex");
+                } else {
+                    Log.d(TAG, "Error");
+                }
             }
         });
     }

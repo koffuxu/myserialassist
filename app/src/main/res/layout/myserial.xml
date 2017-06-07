@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="30dp"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -39,6 +38,31 @@
             android:orientation="vertical"
             tools:ignore="ExtraText">
             >
+            <RadioGroup
+                android:id="@+id/mRadioGroup"
+                android:orientation="vertical"
+                android:background="@color/text_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rBAssic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="show in assic"
+                    android:textColor="@color/bg_black" />
+
+                <RadioButton
+                    android:id="@+id/rBHex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="show in hex"
+                    android:textColor="@color/bg_black" />
+
+
+            </RadioGroup>
+
 
             <Button
                 android:id="@+id/BtCleanRev"
