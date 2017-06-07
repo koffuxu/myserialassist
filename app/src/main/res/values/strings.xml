@@ -28,6 +28,7 @@ limitations under the License.\n
 		port.</string>
     <string name="error_unknown">The serial port can not be opened for an unknown
 		reason.</string>
+    <string name="error_dev">cannot access /dev.</string>
 
 
     <string name="i0">0</string>

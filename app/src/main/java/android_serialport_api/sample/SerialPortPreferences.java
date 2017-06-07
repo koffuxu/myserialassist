@@ -16,12 +16,19 @@
 
 package android_serialport_api.sample;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
+import android.util.Log;
+import android.widget.Toast;
+
 import android_serialport_api.SerialPortFinder;
+
+import static android.content.ContentValues.TAG;
 
 public class SerialPortPreferences extends PreferenceActivity {
 
@@ -40,6 +47,11 @@ public class SerialPortPreferences extends PreferenceActivity {
 		// Devices
 		final ListPreference devices = (ListPreference)findPreference("DEVICE");
         String[] entries = mSerialPortFinder.getAllDevices();
+        if(entries == null){
+            Log.e(Application.TAG, "the all devices enteries is null, force to finished");
+            DisplayError(R.string.error_dev);
+            return;
+        }
         String[] entryValues = mSerialPortFinder.getAllDevicesPath();
 		devices.setEntries(entries);
 		devices.setEntryValues(entryValues);
@@ -60,5 +72,25 @@ public class SerialPortPreferences extends PreferenceActivity {
 				return true;
 			}
 		});
+
+
 	}
+
+    private void DisplayError(int resourceId) {
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Error");
+        b.setMessage(resourceId);
+        b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                SerialPortPreferences.this.finish();
+            }
+        });
+        b.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(Application.TAG,"SerialPortPreferences onDestroy");
+        super.onDestroy();
+    }
 }

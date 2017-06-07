@@ -27,6 +27,8 @@ import android_serialport_api.SerialPortFinder;
 
 public class Application extends android.app.Application {
 
+    public static final String TAG = "Serial";
+    private static Application instance;
 	public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
 	private SerialPort mSerialPort = null;
 
@@ -54,4 +56,14 @@ public class Application extends android.app.Application {
 			mSerialPort = null;
 		}
 	}
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
+
+    public static Application getInstance(){
+        return instance;
+    }
 }

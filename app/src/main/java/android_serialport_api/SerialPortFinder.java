@@ -24,6 +24,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import android.util.Log;
+import android.widget.Toast;
+
+import android_serialport_api.sample.Application;
 
 public class SerialPortFinder {
 
@@ -40,10 +43,23 @@ public class SerialPortFinder {
 				mDevices = new Vector<File>();
 				File dev = new File("/dev");
                 //TODO
-                // Utils.grantPermission(dev);
-				File[] files = dev.listFiles();
-                if(files.length == 0){
-                    System.out.println("Cannot access /dev");
+                /* Check access permission */
+                if(!dev.canRead() || !dev.canWrite()) {
+                    Log.d(TAG,"try to get the access permission");
+                    int isRoot = Utils.grantPermission(dev);
+                    if(isRoot == 0) {
+                        Log.d(TAG,"grant permission failed!");
+                        return null;
+                    }
+
+                }
+				File[] files = null;
+				try{
+					files = dev.listFiles();
+				} catch (SecurityException se) {
+					se.printStackTrace();
+				}
+                if(files == null){
                     return null;
                 }
 				int i;
@@ -65,6 +81,7 @@ public class SerialPortFinder {
 
 	private Vector<Driver> mDrivers = null;
 
+    //the mDrivers like this <["usbserial", "/dev/ttyUSB"] [] []...>
 	Vector<Driver> getDrivers() throws IOException {
 		if (mDrivers == null) {
 			mDrivers = new Vector<Driver>();
@@ -92,8 +109,12 @@ public class SerialPortFinder {
 		try {
 			itdriv = getDrivers().iterator();
 			while(itdriv.hasNext()) {
-				Driver driver = itdriv.next();
-				Iterator<File> itdev = driver.getDevices().iterator();
+				Driver driver = itdriv.next();//Driver:<"usbserial","/dev/ttyUSB">
+                Vector<File> d = driver.getDevices();
+                if(d == null) {
+                    return null;
+                }
+				Iterator<File> itdev = d.iterator();
 				while(itdev.hasNext()) {
 					String device = itdev.next().getName();
 					String value = String.format("%s (%s)", device, driver.getName());
