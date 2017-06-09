@@ -90,6 +90,15 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 		}
 
 	}
+	//ATZT response frame format
+	/*
+	 * +<RSP>[op][para1],[para2], [para3] ,[para4]…<CR><LF>
+	 * RSP: OK / ERR
+	 * op: =
+	 */
+	private void paraseATZTResponse(String rawStr) {
+
+	}
 
 	@Override
 	protected void onDataReceived(final byte[] buffer, final int size) {
