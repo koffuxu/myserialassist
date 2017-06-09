@@ -102,7 +102,12 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 
 	@Override
 	protected void onDataReceived(final byte[] buffer, final int size) {
-       Log.d(TAG, "Received " + size +"byte Data:" + new String(buffer,0,size));
+        StringBuilder reponseStr = null;
+        String fragStr = null;
+        fragStr = new String(buffer, 0, size);
+        reponseStr.append(fragStr);
+        Log.d(TAG, "Received " + size +"byte Data:" + reponseStr.toString());
+        /*
 		runOnUiThread(new Runnable() {
 			public void run() {
 				if (mReception != null) {
@@ -110,6 +115,7 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 				}
 			}
 		});
+		*/
 	}
 
 }
