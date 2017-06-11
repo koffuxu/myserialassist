@@ -10,6 +10,74 @@ import java.util.ArrayList;
 public class AtParser  {
 
     /**
+     *
+     */
+    static private String clean(String input) {
+        StringBuilder out = new StringBuilder(input.length());
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c == '"') {
+                int j = input.indexOf('"', i + 1 );  // search for closing "
+                if (j == -1) {  // unmatched ", insert one.
+                    out.append(input.substring(i, input.length()));
+                    out.append('"');
+                    break;
+                }
+                out.append(input.substring(i, j + 1));
+                i = j;
+            } else if (c != ' ') {
+                out.append(Character.toUpperCase(c));
+            }
+        }
+
+        return out.toString();
+    }
+    /**
+     * Find a character ch, ignoring quoted sections.
+     * Return input.length() if not found.
+     */
+    static private int findChar(char ch, String input, int fromIndex) {
+        for (int i = fromIndex; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c == '"') {
+                i = input.indexOf('"', i + 1);
+                if (i == -1) {
+                    return input.length();
+                }
+            } else if (c == ch) {
+                return i;
+            }
+        }
+        return input.length();
+    }
+    /**
+     * Break an argument string into individual arguments (comma deliminated).
+     * Integer arguments are turned into Integer objects. Otherwise a String
+     * object is used.
+     */
+    static public Object[] generateArgs(String input) {
+        int i = 0;
+        int j;
+        ArrayList<Object> out = new ArrayList();
+        while (i <= input.length()) {
+            j = findChar(',', input, i);
+
+            String arg = input.substring(i, j);
+            try {
+                out.add(new Integer(arg));
+            } catch (NumberFormatException e) {
+                out.add(arg);
+            }
+
+            i = j + 1; // move past comma
+        }
+        return out.toArray();
+    }
+
+    /**
+     * ----------------------------------------------------------------------------------------------------
+     */
+    /**
      * Serial I/O
      */
     private OutputStream outStream;

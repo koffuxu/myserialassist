@@ -18,14 +18,19 @@ package android_serialport_api.sample;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.util.Log;
+
 import android_serialport_api.SerialPort;
 
 public abstract class SerialPortActivity extends Activity {
@@ -35,6 +40,7 @@ public abstract class SerialPortActivity extends Activity {
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
+    public LineNumberReader mLineReader;
 
 	private class ReadThread extends Thread {
 
@@ -46,6 +52,17 @@ public abstract class SerialPortActivity extends Activity {
 				try {
 					byte[] buffer = new byte[64];
 					if (mInputStream == null) return;
+                    /*
+                    //usd LinenumberReader to read InputStrem as one line
+					//TODO 这里的对像不停的NEW，触发GC不断回收
+						mLineReader = new LineNumberReader(new InputStreamReader(mInputStream));
+                        if(mLineReader.ready()){
+							Log.d("SerialPortActivity", "mLineReader is Read?"+mLineReader.ready());
+							size = 9;//mInputStream.read(buffer);
+							onDataReceived(buffer, size);
+						}
+						*/
+					//use the buffer
 					size = mInputStream.read(buffer);
 					if (size > 0) {
 						onDataReceived(buffer, size);

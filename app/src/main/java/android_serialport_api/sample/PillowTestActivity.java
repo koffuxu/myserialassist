@@ -20,6 +20,8 @@ import java.io.IOException;
 
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,11 +31,13 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+
+
 public class PillowTestActivity extends SerialPortActivity implements View.OnClickListener {
 
 	private static final String TAG = "PillowTest";
 	EditText mReception;
-    private String CmdHead = "ztat AT+";
+    private String CmdHead = "ZTAT+";
     private String CmdTail = "\r\n";
 
 	private int sendZTATComand(String rawcmd){
@@ -73,7 +77,14 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
         switch (v.getId()) {
 			case R.id.BtSetLedR:
 				Log.d(TAG, "set led R");
-                sendZTATComand("ZTLED=SETRGB:255,0,0");
+                //sendZTATComand("SETRGB=255,0,0");
+				//test at response
+				String resp = "+OK=GETRGB,255,0,0\r\n";
+				try {
+					mOutputStream.write(resp.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case R.id.BtSetLedG:
                 Log.d(TAG, "set led G");
@@ -90,23 +101,138 @@ public class PillowTestActivity extends SerialPortActivity implements View.OnCli
 		}
 
 	}
+	private enum handler_key {
+		/** 更新界面 */
+		PARSER_COMMAND,
+		DISCONNECT,
+	}
+
+	protected void updateUI(String[] strArry) {
+		String CODE = strArry[0];
+		switch (CODE ) {
+			case "GETRGB":
+			    Log.d(TAG, "set RGB:("+strArry[1]+","+strArry[2]+","+strArry[3]+")");
+				break;
+			default:
+				break;
+		}
+	}
+
+	Handler parserHander = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+            handler_key key = handler_key.values()[msg.what];
+            switch (key){
+				case PARSER_COMMAND:
+					// TODO: 2017/6/11
+					parserATZTResponse(msg.obj.toString());
+					break;
+				default:
+					break;
+			}
+		}
+	};
+
 	//ATZT response frame format
 	/*
-	 * +<RSP>[op][para1],[para2], [para3] ,[para4]…<CR><LF>
+	 * +<RSP>=[op][para1],[para2], [para3] ,[para4]…<CR><LF>
+	 * STATE=VALUE
 	 * RSP: OK / ERR
 	 * op: =
 	 */
-	private void paraseATZTResponse(String rawStr) {
+	private void parserATZTResponse(String rawCommand) {
+		Log.d(TAG, "begain to parser raw command:"+rawCommand);
+        if( rawCommand.startsWith("+OK")) {
+			//get the subString
+			int index = rawCommand.indexOf('=');
+			String subRawCommand = rawCommand.substring(index+1,rawCommand.length());
+			String[] code = subRawCommand.split(",");
+			//for debug begin
+			for(int i = 0; i<code.length;i++)
+				Log.d(TAG,"code index "+i+" is:"+code[i]);
+
+			updateUI(code);
+		} else {
+			//TODO show ERROR Alter
+			Log.d(TAG, "Received a error response of:"+rawCommand);
+		}
 
 	}
 
+	/**
+	 * 1, get the valid String: +...../r
+	 * 2, get the value
+	 * @param buffer
+	 * @param size
+	 */
+	StringBuilder reponseStr = new StringBuilder();
+	boolean matchHead=false, matchTail=false;
 	@Override
 	protected void onDataReceived(final byte[] buffer, final int size) {
-        StringBuilder reponseStr = null;
-        String fragStr = null;
-        fragStr = new String(buffer, 0, size);
-        reponseStr.append(fragStr);
-        Log.d(TAG, "Received " + size +"byte Data:" + reponseStr.toString());
+		Log.d(TAG, "Received " + size +" byte Data:" + new String(buffer,0,size));
+        String fragStr = new String(buffer, 0, size);
+		boolean loopTag = false;
+		int headIndex = 0;
+		//just match tail is /r
+		for (int i=0; i<fragStr.length(); i++){
+			char c = fragStr.charAt(i);
+			//match head 'S'
+			if ( (matchHead==false) && (c == '+')){
+                matchHead = true;
+				loopTag = true;
+                headIndex = i;
+			}
+			//match tail 'B'
+			if(matchHead && (c == '\r')){
+				if(loopTag == true ) {
+                    //match in same frag string
+					Log.d(TAG, ">>> frag match head && tail:"+fragStr.substring(headIndex,i+1) + "; at index:"+i);
+					reponseStr.append(fragStr.substring(headIndex,i+1));
+					matchTail = true;
+				} else {
+					Log.d(TAG, ">>> frag match tail:"+fragStr.substring(0,i+1) + "; at index:"+i);
+					//match head and tail in different frag string
+					reponseStr.append(fragStr.substring(0,i+1));
+					matchTail = true;
+				}
+				matchHead = false;
+				break;
+			} else {
+				//
+			}
+
+		}
+		if(matchTail == true) { //match head and tail
+            String rawComand = reponseStr.toString();
+			Log.d(TAG, ">>>Bingo<<<take the AT Reponse Command:"+rawComand);
+			reponseStr.setLength(0);
+			matchTail = false;
+			//send message to post process
+			Message msg = Message.obtain();
+			msg.what = handler_key.PARSER_COMMAND.ordinal();
+			msg.obj = rawComand;
+			parserHander.sendMessage(msg);
+			//parserHander.sendEmptyMessage(handler_key.PARSER_COMMAND.ordinal());
+		} else if ((matchHead == true) /*&& (loopTag == true)*/){ //match head
+			Log.d(TAG, ">>> Frag  match Head:"+fragStr.substring(headIndex,fragStr.length())+"; at head index:"+headIndex);
+			reponseStr.append(fragStr.substring(headIndex,fragStr.length()));
+			Log.d(TAG,"###BUG, reponseStr:" + reponseStr);
+		} else {//match nothing
+			Log.d(TAG, "XXX this frag was nothing");
+		}
+
+		/**
+		//use Linenumber Reader
+		try {
+			while(mLineReader.ready()){
+				Log.d(TAG, "get a line data: " + mLineReader.readLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+
+
         /*
 		runOnUiThread(new Runnable() {
 			public void run() {
